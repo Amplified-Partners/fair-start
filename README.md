@@ -198,9 +198,24 @@ None of these are taught. They're embedded in how the tools work.
 |------|------|
 | Kagi (6 × £8) | £48 |
 | Brilliant.org (2–3 people) | £22–£33 |
-| AI assistant API | ~£60 |
+| AI assistant API | ~£15–£30* |
 | Everything else | £0 |
-| **Total** | **~£130–£141/month** |
+| **Total** | **~£85–£111/month** |
+
+*AI cost with the token proxy running (see below). Without it: ~£60/month.
+
+### Cutting AI costs — the token proxy
+
+The personal AI instances use Claude Haiku as the primary model (Claude's smallest/fastest). On top of that, we run a local token proxy that sits between every tool and the Anthropic API:
+
+- **Prompt caching** — system prompts cached, ~90% savings on repeated tokens
+- **Context compaction** — server-side history compression at 30k tokens, zero cost
+- **Semantic caching** — identical or near-identical queries return cached responses (100% saving)
+- **Cost tracking** — every call logged, daily spend alerts
+
+The proxy is open source: **[anthropic-token-proxy](https://github.com/ewan-dot/anthropic-token-proxy)**
+
+Set it up once, point `ANTHROPIC_BASE_URL` at it, and every tool gets cheaper transparently.
 
 ### Hardware (One-Time, Phased, Refurb Where Possible)
 
